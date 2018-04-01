@@ -56,8 +56,15 @@ class SpreadScript(object):
     def _get_cell_value(self, column, row):
         return self._interface.getCellByPosition(column, row).getValue()
 
-    def _set_cell_value(self, column, row, value):
-        self._interface.getCellByPosition(column, row).setValue(value)
+    def _get_cell_formula(self, column, row):
+        return self._interface.getCellByPosition(column, row).getFormula()
+
+    def _get_link(self, column, row):
+        return self._get_cell_formula(column, row)[1:].replace(
+            '$', '').split('.')
+
+    def _set_cell_value(self, sheet, cell, value):
+        self._sheets.getByName(sheet).getCellRangeByName(cell).setValue(value)
 
     def _read_table(self, column):
         """Read names and values from a table.
@@ -91,7 +98,8 @@ class SpreadScript(object):
             if not name:
                 break
             if name in data:
-                self._set_cell_value(column + 1, row, data[name])
+                sheet, cell = self._get_link(column + 1, row)
+                self._set_cell_value(sheet, cell, data[name])
             row += 1
 
     def open(self, file_name):
@@ -101,10 +109,10 @@ class SpreadScript(object):
         """
         doc_url = unohelper.systemPathToFileUrl(os.path.abspath(file_name))
         self._desktop.loadComponentFromURL(doc_url, '_blank', 0, ())
-        current_component = self._desktop.getCurrentComponent()
-        if 'Interface' not in current_component.Sheets:
+        self._sheets = self._desktop.getCurrentComponent().Sheets
+        if 'Interface' not in self._sheets:
             raise ValueError('no sheet named "Interface" found')
-        self._interface = current_component.Sheets.Interface
+        self._interface = self._sheets.Interface
 
     def close(self):
         """Close the soffice instance."""

@@ -36,11 +36,10 @@ variable, we first add a new sheet named "Interface".
 ![Example interface.](data/example_interface.png)
 
 In this sheet we put the input variables in column `B` and the values in column
-`C`. In `Sheet1`, we now replace the value of `C3` to `=$Interface.C4` and the
-value of `C4` to `=$Interface.C5`.
+`C`. The value of `C4` is `=$Sheet1.C3`, that of `C5` is `=$Sheet1.C4`.
 
-Likewise, the output variables are put in column `E` and the value is put in
-column `F`. In this example, the value in `F4` is `=$Sheet1.C8`.
+Likewise, the output variables are put in column `E` and the values in column
+`F`. In this example, the value in `F4` is `=$Sheet1.C8`.
 
 ### Command line interface
 With the command line interface, the input and output table can be read.
