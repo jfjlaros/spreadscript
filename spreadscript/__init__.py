@@ -1,4 +1,4 @@
-"""spreadscript: Use a spreadsheet as a function.
+"""SpreadScript: Use a spreadsheet as a function.
 
 
 Copyright (c) 2018 Jeroen F.J. Laros <jlaros@fixedpoint.nl>

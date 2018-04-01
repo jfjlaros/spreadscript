@@ -1,41 +1,26 @@
 import argparse
 import json
 import sys
-from os.path import abspath
 
 from . import doc_split, version, usage
 from .spreadscript import SpreadScript
 
 
-def spreadscript(file_name):
-    """Use a spreadsheet for calculations."""
-    s = SpreadScript()
-    s.open(file_name)
-    data = s.read_input()
-    print(data)
-    print(s.read_output())
-    data['b'] = 30
-    s.write_input(data)
-    print(s.read_input())
-    print(s.read_output())
-    s.close()
-
-
 def read_input(file_name, output_handle):
     """Read the input table."""
     output_handle.write('{}\n'.format(
-        json.dumps(SpreadScript(abspath(file_name)).read_input())))
+        json.dumps(SpreadScript(file_name).read_input())))
 
 
 def read_output(file_name, output_handle):
     """Read the output table."""
     output_handle.write('{}\n'.format(
-        json.dumps(SpreadScript(abspath(file_name)).read_output())))
+        json.dumps(SpreadScript(file_name).read_output())))
 
 
 def process(file_name, data, output_handle):
     """Process the data and read the output table."""
-    spreadsheet = SpreadScript(abspath(file_name))
+    spreadsheet = SpreadScript(file_name)
     spreadsheet.write_input(json.loads(data))
     output_handle.write('{}\n'.format(json.dumps(spreadsheet.read_output())))
 

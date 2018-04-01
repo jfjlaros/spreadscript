@@ -99,7 +99,7 @@ class SpreadScript(object):
 
         :arg str file_name: File name.
         """
-        doc_url = unohelper.systemPathToFileUrl(file_name)
+        doc_url = unohelper.systemPathToFileUrl(os.path.abspath(file_name))
         self._desktop.loadComponentFromURL(doc_url, '_blank', 0, ())
         current_component = self._desktop.getCurrentComponent()
         if 'Interface' not in current_component.Sheets:
