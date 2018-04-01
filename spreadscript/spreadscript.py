@@ -7,11 +7,16 @@ from com.sun.star.connection import NoConnectException
 
 
 class SpreadScript(object):
-    def __init__(self):
-        """Initialise the class."""
+    def __init__(self, file_name=None):
+        """Initialise the class.
+
+        :arg str file_name: File name.
+        """
         self._desktop = None
         self._start_soffice()
         self._connect_soffice()
+        if file_name:
+            self.open(file_name)
 
     def __del__(self):
         """Close the soffice instance."""
@@ -85,7 +90,8 @@ class SpreadScript(object):
             name = self._get_cell_text(column, row)
             if not name:
                 break
-            self._set_cell_value(column + 1, row, data[name])
+            if name in data:
+                self._set_cell_value(column + 1, row, data[name])
             row += 1
 
     def open(self, file_name):
@@ -95,7 +101,10 @@ class SpreadScript(object):
         """
         doc_url = unohelper.systemPathToFileUrl(file_name)
         self._desktop.loadComponentFromURL(doc_url, '_blank', 0, ())
-        self._interface = self._desktop.getCurrentComponent().Sheets.Interface
+        current_component = self._desktop.getCurrentComponent()
+        if 'Interface' not in current_component.Sheets:
+            raise ValueError('no sheet named "Interface" found')
+        self._interface = current_component.Sheets.Interface
 
     def close(self):
         """Close the soffice instance."""
