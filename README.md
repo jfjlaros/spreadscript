@@ -53,7 +53,7 @@ With the command line interface, the input and output table can be read.
     {"height_janie": 1.41, "height_johnny": 1.52}
 
     $ spreadscript read_output data/test.ods
-    {"tallest": 1.76, "average": 1.5775000000000001}
+    {"tallest": 1.76, "average": 1.5775}
 
 To manipulate the input, use the `process` subcommand:
 
@@ -78,7 +78,7 @@ The input and output variables can be read with the `read_input` and
 {'height_johnny': 1.52, 'height_janie': 1.41}
 >>> 
 >>> spreadsheet.read_output()
-{'average': 1.5775000000000001, 'tallest': 1.76}
+{'average': 1.5775, 'tallest': 1.76}
 ```
 
 The `write_input` method is used to update any variables. 
