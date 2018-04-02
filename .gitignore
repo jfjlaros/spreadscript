@@ -1,4 +1,5 @@
 *.swp
 dist/
 spreadscript.egg-info/
+spreadscript/*.pyc
 spreadscript/__pycache__/

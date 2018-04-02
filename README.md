@@ -1,6 +1,7 @@
 # SpreadScript: Use a spreadsheet as a function
-This project provides a way to use spreadsheets from the command line or from
-Python programs.
+This program provides a way to use spreadsheets from the command line or from
+Python programs. In this way, spreadsheets can be used in automated data
+analysis processes.
 
 The inputs and outputs are defined by two tables in a new sheet named
 "Interface". SpreadScript will read the input variables from column `B` and the
@@ -26,34 +27,38 @@ From source:
 
 
 ## Usage
-Suppose we have the following table.
+Suppose we have the following table with heights of family members.
 
 ![Example table.](data/example_table.png)
 
-If we want to define `a` and `b` as input variables and `total` as the output
-variable, we add a new sheet named "Interface".
+Since Janie and Johnny have not reached full height, we might want to export
+their heights as input variables. Suppose we are interested in the average
+height and the tallest person in this family. This information goes to the
+"Interface" sheet.
 
 ![Example interface.](data/example_interface.png)
 
-In this sheet we put the input variables in column `B` and the values in column
-`C`. The value of `C4` is `=$Sheet1.C3` and that of `C5` is `=$Sheet1.C4`.
+In this sheet we put the input variables in column `B` and references to the
+values in column `C`. The value of `C4` is `=$Sheet1.C5` and that of `C5` is
+`=$Sheet1.C6`.
 
-Likewise, the output variables are put in column `E` and the values in column
-`F`. The value of `F4` is `=$Sheet1.C8`.
+Likewise, the output variables are put in column `E` and references to the
+values in column `F`. The value of `F4` is `=$Sheet1.C7` and that of `F5` is
+`=$Sheet1.C9`.
 
 ### Command line interface
 With the command line interface, the input and output table can be read.
 
     $ spreadscript read_input data/test.ods
-    {"b": 2.0, "a": 1.0}
+    {"height_janie": 1.41, "height_johnny": 1.52}
 
     $ spreadscript read_output data/test.ods
-    {"total": 15.0}
+    {"tallest": 1.76, "average": 1.5775000000000001}
 
 To manipulate the input, use the `process` subcommand:
 
-    $ spreadscript process data/test.ods '{"b": 12.0}'
-    {"total": 25.0}
+    $ spreadscript process data/test.ods  '{"height_johnny": 1.56}'
+    {"tallest": 1.76, "average": 1.5875}
 
 
 ### Library
@@ -61,28 +66,25 @@ First import the `SpreadScript` class and load a spreadsheet.
 
 ```python
 >>> from spreadscript import SpreadScript
->>>
+>>> 
 >>> spreadsheet = SpreadScript('data/test.ods')
 ```
 
-The input variables can be read with the `read_input` method.
+The input and output variables can be read with the `read_input` and
+`read_output` methods respectively.
 
 ```python
 >>> spreadsheet.read_input()
-{'b': 2.0, 'a': 1.0}
-```
-
-The `read_output` method returns all output variables.
-
-```python
+{'height_johnny': 1.52, 'height_janie': 1.41}
+>>> 
 >>> spreadsheet.read_output()
-{'total': 15.0}
+{'average': 1.5775000000000001, 'tallest': 1.76}
 ```
 
 The `write_input` method is used to update any variables. 
 
 ```python
->>> spreadsheet.write_input({'b': 4.0})
+>>> spreadsheet.write_input({'height_johnny': 1.56})
 >>> spreadsheet.read_output()
-{'total': 17.0}
+{'average': 1.5875, 'tallest': 1.76}
 ```
