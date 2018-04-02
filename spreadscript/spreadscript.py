@@ -4,6 +4,7 @@ import subprocess
 import uno
 import unohelper
 from com.sun.star.connection import NoConnectException
+from com.sun.star.lang import IllegalArgumentException
 
 
 class SpreadScript(object):
@@ -108,7 +109,11 @@ class SpreadScript(object):
         :arg str file_name: File name.
         """
         doc_url = unohelper.systemPathToFileUrl(os.path.abspath(file_name))
-        self._desktop.loadComponentFromURL(doc_url, '_blank', 0, ())
+        try:
+            self._desktop.loadComponentFromURL(doc_url, '_blank', 0, ())
+        except IllegalArgumentException as error:
+            raise ValueError('no such file or format not supported')
+
         self._sheets = self._desktop.getCurrentComponent().Sheets
         if 'Interface' not in self._sheets:
             raise ValueError('no sheet named "Interface" found')

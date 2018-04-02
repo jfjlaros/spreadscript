@@ -1,5 +1,5 @@
 # SpreadScript: Use a spreadsheet as a function
-This program provides a way to use spreadsheets from the command line or from
+This project provides a way to use spreadsheets from the command line or from
 Python programs. In this way, spreadsheets can be used in automated data
 analysis processes.
 
@@ -8,6 +8,10 @@ The inputs and outputs are defined by two tables in a new sheet named
 values from column `C`. Likewise, the output variables are read from column `E`
 and their values from column `F`. In both cases, the variables are read from
 row `4` onward until an empty cell is encountered.
+
+This method should work with any format that is supported by
+[LibreOffice Calc](https://en.wikipedia.org/wiki/LibreOffice_Calc). It has been
+tested using file formats ODS, XLS and XLSX.
 
 
 ## Installation
