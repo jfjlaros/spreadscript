@@ -35,21 +35,20 @@ class SpreadScript(object):
 
     def _connect_soffice(self):
         """Connect to a running soffice instance."""
-        local_context = uno.getComponentContext()
-        resolver = local_context.ServiceManager.createInstanceWithContext(
-            'com.sun.star.bridge.UnoUrlResolver', local_context)
+        context = uno.getComponentContext()
+        resolver = context.ServiceManager.createInstanceWithContext(
+            'com.sun.star.bridge.UnoUrlResolver', context)
         while True:
             try:
-                component_context = resolver.resolve(
+                context = resolver.resolve(
                     'uno:socket,host=localhost,port=2002;urp;' +
                     'StarOffice.ComponentContext')
             except NoConnectException:
                 pass
             else:
                 break
-        smgr = component_context.ServiceManager
-        self._desktop = smgr.createInstanceWithContext(
-            'com.sun.star.frame.Desktop', component_context)
+        self._desktop = context.ServiceManager.createInstanceWithContext(
+            'com.sun.star.frame.Desktop', context)
 
     def _get_cell_text(self, column, row):
         return self._interface.getCellByPosition(column, row).getString()
