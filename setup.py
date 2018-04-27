@@ -26,9 +26,6 @@ if sys.version_info < supported[0]:
     raise Exception('{} requires Python {}.{} or higher.'.format(
         package, *supported[0]))
 
-if sys.version_info[:2] == supported[0]:
-    dependencies.extend(['argparse', 'importlib'])
-
 # This is quite the hack, but we don't want to import our package from here
 # since that's recipe for disaster (it might have some uninstalled
 # dependencies, or we might import another already installed version).
